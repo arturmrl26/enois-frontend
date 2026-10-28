@@ -45,7 +45,7 @@ function arquivosDoApp(): string[] {
       }
       if (!caminho.endsWith(".ts") && !caminho.endsWith(".tsx")) continue;
       if (caminho.includes(".test.")) continue;
-      const relativa = caminho.slice(process.cwd().length + 1);
+      const relativa = caminho.slice(process.cwd().length + 1).replaceAll("\\", "/");
       if (relativa === "src/lib/date/format.ts") continue;
       encontrados.push(relativa);
     }

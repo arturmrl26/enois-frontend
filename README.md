@@ -68,17 +68,19 @@ context-path ligado e aponte o proxy para ele:
 ./mvnw spring-boot:run -Dspring-boot.run.arguments="--server.port=8081 --server.servlet.context-path=/api"
 
 # aqui no front
-BACKEND_TARGET=http://localhost:8081 npm run dev
+BACKEND_TARGET=http://localhost:8081 VITE_API_BACKEND=http://localhost:8081/api VITE_SITE_URL=http://localhost:8080 npm run dev
 ```
 
 Sem o `context-path=/api` o backend responde só em `/push/config`, `/notifications`, etc., e o proxy devolve
 404 em tudo.
 
+`VITE_API_BACKEND` e `VITE_SITE_URL` também são necessários para abrir diretamente rotas com loader no
+servidor, como `/perfil/$username`. O navegador continua usando `/api` pelo proxy do Vite.
+
 **Sessão no dev**: a sessão vive em cookies HttpOnly (`enois_session`/`enois_refresh`) que a API grava. No
 dev o navegador fala só com o Vite (`/api` relativo, via proxy), então os cookies são do próprio
-`localhost` e chegam sem configuração de CORS. Eles saem com `Secure`: o navegador aceita isso em
-`http://localhost`, mas não em `http://<ip-da-rede>` — para abrir o dev pelo IP, suba o backend com o profile
-`dev` (que liga `rede.auth.cookie-secure=false`). Toda escrita manda `X-CSRF-Protection: 1`; o backend
+`localhost` e chegam sem configuração de CORS. O profile `dev` do backend define
+`rede.auth.cookie-secure=false` para o HTTP local. Toda escrita manda `X-CSRF-Protection: 1`; o backend
 recusa escrita com cookie sem esse header (403 `CSRF_REQUIRED`).
 
 ## Scripts

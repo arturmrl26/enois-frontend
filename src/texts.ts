@@ -841,6 +841,7 @@ export const texts = {
   },
   presence: {
     title: "Estado de presença",
+    change: "Mudar presença",
     previewTitle: "Prévia do estado de presença",
     previewHint: "Teste o menu aqui. Esta página de prévia não salva a escolha na conta.",
     unavailable: "O estado de presença ainda não está disponível neste servidor.",

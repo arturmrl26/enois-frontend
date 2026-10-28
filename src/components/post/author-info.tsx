@@ -4,6 +4,7 @@ import { texts } from "@/texts";
 import type { AuthorInfoProps } from "@/types/components/post/author-info-props";
 
 import { ContributorTag } from "@/components/contributor-tag";
+import { PresenceIndicator } from "@/components/presence-indicator";
 import { StyledName } from "@/components/styled-name";
 import { UserAvatar } from "@/components/user-avatar";
 import { UserBadges } from "@/components/user-badge";
@@ -21,6 +22,7 @@ export function AuthorInfo({
   authorStyle,
   authorContributor,
   authorIdentity,
+  isOwn = false,
   createdAt,
   community,
   fallbackClassName,
@@ -73,6 +75,8 @@ export function AuthorInfo({
               <StyledName name={authorName} style={authorStyle} />
             </Link>
           )}
+
+          {!corporate && <PresenceIndicator username={authorUsername} isOwn={isOwn} />}
 
           <UserBadges badges={authorBadges} badge={authorBadge} />
 

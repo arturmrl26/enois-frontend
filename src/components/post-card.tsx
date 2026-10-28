@@ -277,6 +277,7 @@ function PostCardView({
           authorStyle={post.authorStyle}
           authorContributor={post.authorContributor}
           authorIdentity={post.authorIdentity}
+          isOwn={isOwner}
           authorAvatar={post.authorAvatar}
           authorAvatarFrame={post.authorAvatarFrame}
           createdAt={post.createdAt}

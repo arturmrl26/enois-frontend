@@ -198,6 +198,7 @@ Página pública (qualquer um pode ver). Loader busca dados ou `notFound`.
 - Banner editável com hover e crop
 - Avatar editável com hover e crop
 - Nome, headline, badges (openToWork, isMentor), empresa, local, conexões, reputação
+- Bolinha de presença junto ao nome; no próprio perfil, abre a escolha de estado
 - Seções: Sobre, Habilidades, Objetivos, Publicações
 - Sidebar: Disponibilidade, Recomendar, Recomendações recebidas, Ranking, Links externos
 - Dono do perfil: botão "Editar perfil" com dialog multi-aba

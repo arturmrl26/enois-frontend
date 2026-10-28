@@ -14,6 +14,7 @@ export type AuthorInfoProps = Pick<
   | "createdAt"
   | "community"
 > & {
+  isOwn?: boolean;
   fallbackClassName?: string;
   /** Chamado quando o leitor aperta "Seguir" na comunidade do post. */
   onFollowCommunity?: () => void;

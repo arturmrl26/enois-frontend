@@ -52,7 +52,7 @@ Card de post no feed, com todas as ações sociais.
 
 **Funcionalidades:**
 
-- Cabeçalho com autor (avatar, nome, timestamp) e badge de tipo
+- Cabeçalho com autor (avatar, nome, presença ao final do nome, timestamp) e badge de tipo
 - Conteúdo com linkify (@menções e URLs clicáveis)
 - Grid de mídia (imagens com fullscreen, vídeo)
 - Resumo de reações com emojis
@@ -68,6 +68,7 @@ Card de post no feed, com todas as ações sociais.
 - `ReportDialog()` - Dialog de denúncia com motivo e descrição
 - `CommentItem()` - Comentário individual com reply, reaction, delete
 - `AuthorInfo()` - Cabeçalho do autor do post
+- `PresenceIndicator()` - Estado público do autor; no próprio post, a bolinha abre a escolha de presença
 - `EmbedPlayer()` - Player de vídeo embed com thumbnail e clique para play
 - `LinkPreviews()` - Preview de links e vídeos no conteúdo
 - `extractVideoId()` - Extrai plataforma e ID de URL de vídeo

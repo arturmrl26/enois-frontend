@@ -47,7 +47,6 @@ import {
 } from "@/lib/api";
 import { authApi } from "@/lib/api";
 import { resolveCdnUrl } from "@/lib/api/media";
-import { presenceApi } from "@/lib/api/presence";
 import { conversationErrorMessage } from "@/lib/conversation-error";
 import { buildShareTags } from "@/lib/open-graph";
 import { isApprovedSoundCloudEmbed } from "@/lib/soundcloud-embed";
@@ -77,6 +76,7 @@ import { PostCard } from "@/components/post-card";
 import { ReportDialog } from "@/components/post/report-dialog";
 import { RichText } from "@/components/post/rich-text";
 import { SandboxedHtmlFrame } from "@/components/post/sandboxed-html-frame";
+import { PresenceIndicator } from "@/components/presence-indicator";
 import { ProfileBannerDialog } from "@/components/profile-banner-dialog";
 import { ProfileBioDialog } from "@/components/profile-bio-dialog";
 import { ProfileResumeDialog } from "@/components/profile-resume-dialog";
@@ -188,12 +188,6 @@ function Profile() {
 
   const user = liveProfile ?? loaderUser;
   const isOwnProfile = me?.id === user.id;
-  const { data: publicPresence } = useQuery({
-    queryKey: ["presence", "public", user.username],
-    queryFn: () => presenceApi.byUsername(user.username),
-    retry: false,
-    refetchInterval: 60_000,
-  });
 
   const { data: contributorSeals } = useQuery({
     queryKey: ["contributor-seals", user.username],
@@ -642,24 +636,7 @@ function Profile() {
                   {user.name}
                 </h1>
 
-                {publicPresence && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2 py-0.5 text-xs text-text-subtle">
-                    <span
-                      aria-hidden
-                      className={cn(
-                        "h-2 w-2 rounded-full",
-                        publicPresence.status === "AVAILABLE" && "bg-emerald-500",
-                        publicPresence.status === "AWAY" && "bg-amber-400",
-                        publicPresence.status === "DO_NOT_DISTURB" && "bg-rose-500",
-                        (publicPresence.status === "OFFLINE" ||
-                          publicPresence.status === "INVISIBLE") &&
-                          "bg-slate-400",
-                      )}
-                    />
-
-                    {texts.presence.publicStatus[publicPresence.status]}
-                  </span>
-                )}
+                <PresenceIndicator username={user.username} isOwn={isOwnProfile} />
 
                 {/* Vulgo: etiqueta ao lado do nome, escolhida pela própria pessoa. */}
                 {user.aka && (
