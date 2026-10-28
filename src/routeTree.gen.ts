@@ -23,6 +23,7 @@ import { Route as ResponsavelRouteImport } from './routes/responsavel'
 import { Route as RedeRouteImport } from './routes/rede'
 import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as PresencaPreviewRouteImport } from './routes/presenca-preview'
 import { Route as PenalidadesRouteImport } from './routes/penalidades'
 import { Route as ModeradorRouteImport } from './routes/moderador'
 import { Route as ModeracaoRouteImport } from './routes/moderacao'
@@ -144,6 +145,11 @@ const ProfissionalRoute = ProfissionalRouteImport.update({
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresencaPreviewRoute = PresencaPreviewRouteImport.update({
+  id: '/presenca-preview',
+  path: '/presenca-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PenalidadesRoute = PenalidadesRouteImport.update({
@@ -436,6 +442,7 @@ export interface FileRoutesByFullPath {
   '/moderacao': typeof ModeracaoRouteWithChildren
   '/moderador': typeof ModeradorRoute
   '/penalidades': typeof PenalidadesRoute
+  '/presenca-preview': typeof PresencaPreviewRoute
   '/privacidade': typeof PrivacidadeRoute
   '/profissional': typeof ProfissionalRoute
   '/rede': typeof RedeRoute
@@ -504,6 +511,7 @@ export interface FileRoutesByTo {
   '/moderacao': typeof ModeracaoRouteWithChildren
   '/moderador': typeof ModeradorRoute
   '/penalidades': typeof PenalidadesRoute
+  '/presenca-preview': typeof PresencaPreviewRoute
   '/privacidade': typeof PrivacidadeRoute
   '/profissional': typeof ProfissionalRoute
   '/rede': typeof RedeRoute
@@ -573,6 +581,7 @@ export interface FileRoutesById {
   '/moderacao': typeof ModeracaoRouteWithChildren
   '/moderador': typeof ModeradorRoute
   '/penalidades': typeof PenalidadesRoute
+  '/presenca-preview': typeof PresencaPreviewRoute
   '/privacidade': typeof PrivacidadeRoute
   '/profissional': typeof ProfissionalRoute
   '/rede': typeof RedeRoute
@@ -643,6 +652,7 @@ export interface FileRouteTypes {
     | '/moderacao'
     | '/moderador'
     | '/penalidades'
+    | '/presenca-preview'
     | '/privacidade'
     | '/profissional'
     | '/rede'
@@ -711,6 +721,7 @@ export interface FileRouteTypes {
     | '/moderacao'
     | '/moderador'
     | '/penalidades'
+    | '/presenca-preview'
     | '/privacidade'
     | '/profissional'
     | '/rede'
@@ -779,6 +790,7 @@ export interface FileRouteTypes {
     | '/moderacao'
     | '/moderador'
     | '/penalidades'
+    | '/presenca-preview'
     | '/privacidade'
     | '/profissional'
     | '/rede'
@@ -848,6 +860,7 @@ export interface RootRouteChildren {
   ModeracaoRoute: typeof ModeracaoRouteWithChildren
   ModeradorRoute: typeof ModeradorRoute
   PenalidadesRoute: typeof PenalidadesRoute
+  PresencaPreviewRoute: typeof PresencaPreviewRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProfissionalRoute: typeof ProfissionalRoute
   RedeRoute: typeof RedeRoute
@@ -977,6 +990,13 @@ declare module '@tanstack/react-router' {
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/presenca-preview': {
+      id: '/presenca-preview'
+      path: '/presenca-preview'
+      fullPath: '/presenca-preview'
+      preLoaderRoute: typeof PresencaPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/penalidades': {
@@ -1482,6 +1502,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModeracaoRoute: ModeracaoRouteWithChildren,
   ModeradorRoute: ModeradorRoute,
   PenalidadesRoute: PenalidadesRoute,
+  PresencaPreviewRoute: PresencaPreviewRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProfissionalRoute: ProfissionalRoute,
   RedeRoute: RedeRoute,

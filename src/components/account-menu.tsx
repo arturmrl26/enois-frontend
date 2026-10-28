@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 
 import { texts } from "@/texts";
+import type { PresenceStatus } from "@/types/application/presence/presence-status";
 import type { AccountMenuProps } from "@/types/components/account/account-menu-props";
 import type { ActiveIdentity } from "@/types/lib/active-identity";
 import {
@@ -32,6 +33,7 @@ import {
   writeActiveIdentity,
 } from "@/lib/active-identity";
 import { corporateApi, profileApi } from "@/lib/api";
+import { presenceApi } from "@/lib/api/presence";
 import { logout } from "@/lib/logout";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +45,7 @@ import { ChangePasswordDialog } from "./change-password-dialog";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 import { HealthyUsageDialog } from "./healthy-usage/healthy-usage-dialog";
 import { LinkedAccountsDialog } from "./linked-accounts-dialog";
+import { PresenceSelector } from "./presence-selector";
 import { PushToggle } from "./push-toggle";
 import { UserAvatar } from "./user-avatar";
 
@@ -50,6 +53,7 @@ const ITEM_CLASS =
   "flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-normal text-text-strong transition hover:bg-surface-2 disabled:opacity-50";
 
 export function AccountMenu({ profile }: AccountMenuProps) {
+  const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showChangeEmail, setShowChangeEmail] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
@@ -59,6 +63,20 @@ export function AccountMenu({ profile }: AccountMenuProps) {
   const [loggingOut, setLoggingOut] = useState(false);
   const { toast } = useToast();
   const [chosenIdentity, setChosenIdentity] = useState<ActiveIdentity>(() => readActiveIdentity());
+
+  const presence = useQuery({
+    queryKey: ["presence", "me"],
+    queryFn: presenceApi.own,
+    retry: false,
+    staleTime: 60_000,
+  });
+  const updatePresence = useMutation({
+    mutationFn: (status: PresenceStatus) => presenceApi.set(status),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(["presence", "me"], updated);
+      void queryClient.invalidateQueries({ queryKey: ["presence", "public", profile.username] });
+    },
+  });
 
   useEffect(() => subscribeActiveIdentity(() => setChosenIdentity(readActiveIdentity())), []);
 
@@ -161,6 +179,15 @@ export function AccountMenu({ profile }: AccountMenuProps) {
               <p className="truncate text-xs text-text-subtle">{profile.email}</p>
             </div>
           </div>
+
+          {presence.data && (
+            <PresenceSelector
+              status={presence.data.status}
+              onChange={(status) => updatePresence.mutate(status)}
+              pending={updatePresence.isPending}
+              error={updatePresence.isError ? texts.presence.updateError : null}
+            />
+          )}
 
           {/* Identidade ativa: só aparece quando há perfil profissional (a escolha é de
               interface; o backend decide a autoria de cada publicação). */}

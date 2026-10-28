@@ -1,6 +1,7 @@
 import type { WithRequiredChildren } from "@/types/components/with-required-children";
 
 import { useCurrentUser } from "@/lib/current-user";
+import { usePresenceHeartbeat } from "@/lib/use-presence-heartbeat";
 
 import { AppLayout } from "./app-layout";
 import { AppSidebar } from "./app-sidebar";
@@ -9,6 +10,7 @@ import { NavigationDrawer } from "./navigation-drawer";
 
 export function AuthenticatedAppContainer({ children }: WithRequiredChildren) {
   useCurrentUser();
+  usePresenceHeartbeat();
 
   return (
     <AppLayout>
